@@ -84,7 +84,9 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0",
     "shortid": "^2.2.16",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.4",
+    "ts-node": "10.4.0"
+
   },
   "devDependencies": {
     "@nestjs/cli": "8.2.0",
