@@ -13,11 +13,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.use(requestIp.mw());
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
 
   // Helmet Middleware against known security vulnerabilities
   app.use(helmet());
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix('api/v1');
 
   // Swagger API Documentation
   const options = new DocumentBuilder()
@@ -28,8 +28,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
-
-  await app.listen(process.env.PORT || 5000, '127.0.0.1');
+  const host = '0.0.0.0'
+  await app.listen(process.env.PORT || 5000, host);
 }
 
 bootstrap();
