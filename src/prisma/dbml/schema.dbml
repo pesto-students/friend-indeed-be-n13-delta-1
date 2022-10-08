@@ -1,0 +1,139 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Therapist {
+  id String [pk]
+  name String
+  email String [unique, not null]
+  imageUrl String
+  bookingUrl String
+  about String
+  rating Int
+  experience Int
+  onboarded Boolean [default: false]
+  consultationFee Int
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  active Boolean [not null, default: true]
+  feedback Feedback [not null]
+  categories TherapistCategories [not null]
+  qualification String[] [not null]
+  booking Booking [not null]
+  Conversation Conversation [not null]
+}
+
+Table TherapistCategories {
+  id String [pk]
+  therapistId String
+  categoryId String
+  experience Int [not null, default: 0]
+  category Category
+  therapist Therapist
+}
+
+Table Patient {
+  id String [pk]
+  name String [not null]
+  email String [unique, not null]
+  imageUrl String
+  active Boolean [default: true]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  feedback Feedback [not null]
+  booking Booking [not null]
+  subscriptionId String
+  subscription Subscription
+  Conversation Conversation [not null]
+}
+
+Table Category {
+  id String [pk]
+  name String [unique, not null]
+  active Boolean [default: true]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  therapists TherapistCategories [not null]
+}
+
+Table Feedback {
+  id String [pk]
+  patientId String [not null]
+  therapistId String [not null]
+  rating Int [not null]
+  comment String [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+  patient Patient [not null]
+  therapist Therapist [not null]
+
+  indexes {
+    (patientId, therapistId) [unique]
+  }
+}
+
+Table Subscription {
+  id String [pk]
+  fee Int [not null]
+  active Boolean [default: true]
+  patientId String
+  patient Patient [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+}
+
+Table Booking {
+  id String [pk]
+  status Status [not null, default: 'PENDING']
+  fees Int [not null]
+  orderId String [unique]
+  patientId String [not null]
+  therapistId String [not null]
+  patient Patient [not null]
+  therapist Therapist [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+}
+
+Table Conversation {
+  id String [pk]
+  content String [not null]
+  senderId String [not null]
+  receiverId String [not null]
+  patient Patient [not null]
+  therapist Therapist [not null]
+  createdAt DateTime [default: `now()`]
+  readAt String
+}
+
+Table HabitProgress {
+  id String [pk]
+  answer1 String [not null]
+  answeredAt DateTime [not null]
+  treatmentId String [not null]
+}
+
+Enum Status {
+  PENDING
+  BOOKED
+  COMPLETED
+  CANCELLED
+}
+
+Ref: TherapistCategories.categoryId > Category.id
+
+Ref: TherapistCategories.therapistId > Therapist.id
+
+Ref: Patient.subscriptionId > Subscription.id
+
+Ref: Feedback.patientId > Patient.id
+
+Ref: Feedback.therapistId > Therapist.id
+
+Ref: Booking.patientId > Patient.id
+
+Ref: Booking.therapistId > Therapist.id
+
+Ref: Conversation.senderId > Patient.id
+
+Ref: Conversation.receiverId > Therapist.id
